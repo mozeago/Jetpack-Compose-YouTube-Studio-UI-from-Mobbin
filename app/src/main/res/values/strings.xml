@@ -4,6 +4,6 @@
     <string name="app_route_favorites">favorites</string>
     <string name="app_route_support">support</string>
     <string name="app_route_more">more</string>
-    <string name="app_route_one_one_one">Call us</string>
+    <string name="app_route_one_on_one">Call us</string>
     <string name="app_search">search</string>
 </resources>

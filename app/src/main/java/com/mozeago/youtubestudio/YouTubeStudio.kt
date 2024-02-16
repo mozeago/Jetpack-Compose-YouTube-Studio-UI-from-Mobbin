@@ -1,7 +1,6 @@
 package com.mozeago.youtubestudio
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
+import android.util.Log
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -22,6 +21,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import com.mozeago.youtubestudio.ui.screen.CallUs
+import com.mozeago.youtubestudio.ui.screen.Favorite
+import com.mozeago.youtubestudio.ui.screen.Listen
+import com.mozeago.youtubestudio.ui.screen.More
+import com.mozeago.youtubestudio.ui.screen.Support
 
 @Composable
 fun YouTubeStudioTopSearchBar(modifier: Modifier = Modifier) {
@@ -45,10 +50,10 @@ fun YouTubeStudioTopSearchBar(modifier: Modifier = Modifier) {
 
 @Composable
 fun YouTubeStudioBottomNavigation(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier, navController: NavHostController
 ) {
     val selectedDestination = remember {
-        mutableStateOf(YouTubeStudioRoutes.LISTEN)
+        mutableStateOf(Listen.route)
     }
     Row {
         NavigationBar(modifier = modifier.fillMaxWidth()) {
@@ -56,14 +61,15 @@ fun YouTubeStudioBottomNavigation(
                 NavigationBarItem(selected = selectedDestination.value == youTubeStudioTopLevelDestinations.route,
                     onClick = {
                         selectedDestination.value = youTubeStudioTopLevelDestinations.route
+                        navController.navigate(youTubeStudioTopLevelDestinations.route)
+                        Log.d("ROUTE",youTubeStudioTopLevelDestinations.route)
                     },
                     icon = {
                         Icon(
                             painter = painterResource(id = youTubeStudioTopLevelDestinations.selectedIcon),
                             contentDescription = stringResource(id = youTubeStudioTopLevelDestinations.iconTextId)
                         )
-                    },
-                    label = {
+                    }, label = {
                         Text(text = stringResource(id = youTubeStudioTopLevelDestinations.iconTextId))
                     })
             }
@@ -72,50 +78,95 @@ fun YouTubeStudioBottomNavigation(
     }
 }
 
-object YouTubeStudioRoutes {
-    const val LISTEN = "listen"
-    const val FAVORITES = "favorites"
-    const val SUPPORT = "support"
-    const val ONE_ON_ONE = "one_on_one"
-    const val MORE = "more"
+
+interface YouTubeStudioTopLevelDestinations {
+    val route: String
+    val screen: @Composable () -> Unit
+    val iconTextId: Int
+    val selectedIcon: Int
+    val unSelectedIcon: Int
 }
 
-data class YouTubeStudioTopLevelDestinations(
-    val route: String,
-    @StringRes val iconTextId: Int,
-    @DrawableRes val selectedIcon: Int,
-    @DrawableRes val unSelectedIcon: Int
-)
+object Listen : YouTubeStudioTopLevelDestinations {
+    override val route: String
+        get() = "listen"
+    override val screen: @Composable () -> Unit
+        get() = {
+            Listen()
+        }
+    override val iconTextId: Int
+        get() = R.string.app_route_listen
+    override val selectedIcon: Int
+        get() = R.drawable.ic_listen
+    override val unSelectedIcon: Int
+        get() = R.drawable.ic_listen
+
+}
+
+object Favorite : YouTubeStudioTopLevelDestinations {
+    override val route: String
+        get() = "favorites"
+    override val screen: @Composable () -> Unit
+        get() = {
+            Favorite()
+        }
+    override val iconTextId: Int
+        get() = R.string.app_route_favorites
+    override val selectedIcon: Int
+        get() = R.drawable.ic_favorite
+    override val unSelectedIcon: Int
+        get() = R.drawable.ic_favorite
+
+}
+
+object Support : YouTubeStudioTopLevelDestinations {
+    override val route: String
+        get() = "support"
+    override val screen: @Composable () -> Unit
+        get() = {
+            Support()
+        }
+    override val iconTextId: Int
+        get() = R.string.app_route_support
+    override val selectedIcon: Int
+        get() = R.drawable.ic_give
+    override val unSelectedIcon: Int
+        get() = R.drawable.ic_give
+
+}
+
+object CallUs : YouTubeStudioTopLevelDestinations {
+    override val route: String
+        get() = "one_on_one"
+    override val screen: @Composable () -> Unit
+        get() = {
+            CallUs()
+        }
+    override val iconTextId: Int
+        get() = R.string.app_route_one_on_one
+    override val selectedIcon: Int
+        get() = R.drawable.ic_call_us
+    override val unSelectedIcon: Int
+        get() = R.drawable.ic_call_us
+
+}
+
+object More : YouTubeStudioTopLevelDestinations {
+    override val route: String
+        get() = "more"
+    override val screen: @Composable () -> Unit
+        get() = {
+            More()
+        }
+    override val iconTextId: Int
+        get() = R.string.app_route_more
+    override val selectedIcon: Int
+        get() = R.drawable.ic_more
+    override val unSelectedIcon: Int
+        get() = R.drawable.ic_more
+
+}
 
 val TOP_LEVEL_DESTINATIONS = listOf(
-    YouTubeStudioTopLevelDestinations(
-        route = YouTubeStudioRoutes.LISTEN,
-        iconTextId = R.string.app_route_listen,
-        selectedIcon = R.drawable.ic_listen,
-        unSelectedIcon = R.drawable.ic_listen
-    ),
-    YouTubeStudioTopLevelDestinations(
-        route = YouTubeStudioRoutes.FAVORITES,
-        iconTextId = R.string.app_route_favorites,
-        selectedIcon = R.drawable.ic_favorite,
-        unSelectedIcon = R.drawable.ic_favorite
-    ),
-    YouTubeStudioTopLevelDestinations(
-        route = YouTubeStudioRoutes.SUPPORT,
-        iconTextId = R.string.app_route_support,
-        selectedIcon = R.drawable.ic_give,
-        unSelectedIcon = R.drawable.ic_give
-    ),
-    YouTubeStudioTopLevelDestinations(
-        route = YouTubeStudioRoutes.ONE_ON_ONE,
-        iconTextId = R.string.app_route_one_one_one,
-        selectedIcon = R.drawable.ic_call_us,
-        unSelectedIcon = R.drawable.ic_call_us
-    ),
-    YouTubeStudioTopLevelDestinations(
-        route = YouTubeStudioRoutes.MORE,
-        iconTextId = R.string.app_route_more,
-        selectedIcon = R.drawable.ic_more,
-        unSelectedIcon = R.drawable.ic_more
-    ),
+    Listen, Favorite, Support, CallUs, More
 )
