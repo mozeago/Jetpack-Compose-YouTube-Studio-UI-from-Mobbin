@@ -1,6 +1,6 @@
 package com.mozeago.youtubestudio
 
-import android.util.Log
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -8,25 +8,37 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.mozeago.youtubestudio.ui.screen.CallUs
 import com.mozeago.youtubestudio.ui.screen.Favorite
 import com.mozeago.youtubestudio.ui.screen.Listen
 import com.mozeago.youtubestudio.ui.screen.More
 import com.mozeago.youtubestudio.ui.screen.Support
+import com.mozeago.youtubestudio.ui.theme.YouTubeStudioTheme
+import java.util.Locale
 
 @Composable
 fun YouTubeStudioTopSearchBar(modifier: Modifier = Modifier) {
@@ -44,7 +56,7 @@ fun YouTubeStudioTopSearchBar(modifier: Modifier = Modifier) {
         }, modifier = modifier
             .fillMaxWidth()
             .heightIn(56.dp)
-            .padding(16.dp)
+            .padding(16.dp, top = 30.dp)
     )
 }
 
@@ -55,30 +67,69 @@ fun YouTubeStudioBottomNavigation(
     val selectedDestination = remember {
         mutableStateOf(Listen.route)
     }
+    var selectedIndex by rememberSaveable {
+        mutableIntStateOf(0)
+    }
     Row {
-        NavigationBar(modifier = modifier.fillMaxWidth()) {
-            TOP_LEVEL_DESTINATIONS.forEach { youTubeStudioTopLevelDestinations ->
-                NavigationBarItem(selected = selectedDestination.value == youTubeStudioTopLevelDestinations.route,
+        NavigationBar(
+            modifier = modifier
+                .fillMaxWidth()
+                .shadow(elevation = 24.dp, shape = MaterialTheme.shapes.extraSmall),
+            containerColor = Color.White
+        ) {
+            TOP_LEVEL_DESTINATIONS.forEachIndexed { index, youTubeStudioTopLevelDestinations ->
+                NavigationBarItem(
+                    selected = selectedDestination.value == youTubeStudioTopLevelDestinations.route,
                     onClick = {
+                        selectedIndex = index
                         selectedDestination.value = youTubeStudioTopLevelDestinations.route
                         navController.navigate(youTubeStudioTopLevelDestinations.route)
-                        Log.d("ROUTE",youTubeStudioTopLevelDestinations.route)
                     },
                     icon = {
                         Icon(
                             painter = painterResource(id = youTubeStudioTopLevelDestinations.selectedIcon),
-                            contentDescription = stringResource(id = youTubeStudioTopLevelDestinations.iconTextId)
+                            contentDescription = stringResource(id = youTubeStudioTopLevelDestinations.iconTextId),
                         )
                     }, label = {
-                        Text(text = stringResource(id = youTubeStudioTopLevelDestinations.iconTextId))
-                    })
+                        Text(
+                            text = stringResource(id = youTubeStudioTopLevelDestinations.iconTextId).replaceFirstChar {
+                                if (it.isLowerCase()) it.titlecase(
+                                    Locale.getDefault()
+                                ) else it.toString()
+                            },
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = if (selectedDestination.value == youTubeStudioTopLevelDestinations.route)
+                                FontWeight.Bold else
+                                FontWeight.Normal
+                        )
+                    },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Color(0XFFE80000),
+                        selectedTextColor = Color(0XFFE80000),
+                        indicatorColor = Color(0XFFffffff)
+
+                    )
+                )
+
             }
 
         }
     }
 }
 
-
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES, name = "DefaultPreviewDark", showBackground = true
+)
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_NO, name = "DefaultPreviewLight", showBackground = true
+)
+@Composable
+fun YouTubeStudioBottomNavigationPreview() {
+    val navController = rememberNavController()
+    YouTubeStudioTheme {
+        YouTubeStudioBottomNavigation(navController = navController)
+    }
+}
 interface YouTubeStudioTopLevelDestinations {
     val route: String
     val screen: @Composable () -> Unit

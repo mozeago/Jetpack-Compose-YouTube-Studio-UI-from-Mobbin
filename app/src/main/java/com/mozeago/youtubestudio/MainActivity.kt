@@ -29,8 +29,6 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Scaffold(bottomBar = {
                     YouTubeStudioBottomNavigation(navController = navController)
-                }, topBar = {
-                    YouTubeStudioTopSearchBar()
                 }) { paddingValues ->
 
                     NavHost(

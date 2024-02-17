@@ -8,9 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mozeago.youtubestudio.YouTubeStudioTopSearchBar
 
 @Composable
 fun Favorite(modifier: Modifier = Modifier) {
+    YouTubeStudioTopSearchBar()
     Column(
         modifier = modifier.padding(50.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
