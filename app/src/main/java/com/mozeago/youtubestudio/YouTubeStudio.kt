@@ -1,6 +1,8 @@
 package com.mozeago.youtubestudio
 
 import android.content.res.Configuration
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -27,9 +29,13 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.mozeago.youtubestudio.ui.screen.CallUs
@@ -60,6 +66,7 @@ fun YouTubeStudioTopSearchBar(modifier: Modifier = Modifier) {
     )
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun YouTubeStudioBottomNavigation(
     modifier: Modifier = Modifier, navController: NavHostController
@@ -97,10 +104,14 @@ fun YouTubeStudioBottomNavigation(
                                     Locale.getDefault()
                                 ) else it.toString()
                             },
+                            fontSize = 16.sp,
+                            lineHeight = 24.sp,
                             style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = if (selectedDestination.value == youTubeStudioTopLevelDestinations.route)
-                                FontWeight.Bold else
-                                FontWeight.Normal
+                            fontStyle = FontStyle.Normal,
+                            fontWeight = if (selectedDestination.value == youTubeStudioTopLevelDestinations.route) FontWeight.W900 else FontWeight.W400,
+                            fontFamily = FontFamily(
+                                Font(R.font.basier_square_regular)
+                            )
                         )
                     },
                     colors = NavigationBarItemDefaults.colors(
@@ -117,6 +128,7 @@ fun YouTubeStudioBottomNavigation(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(
     uiMode = Configuration.UI_MODE_NIGHT_YES, name = "DefaultPreviewDark", showBackground = true
 )
@@ -142,6 +154,7 @@ object Listen : YouTubeStudioTopLevelDestinations {
     override val route: String
         get() = "listen"
     override val screen: @Composable () -> Unit
+        @RequiresApi(Build.VERSION_CODES.Q)
         get() = {
             Listen()
         }

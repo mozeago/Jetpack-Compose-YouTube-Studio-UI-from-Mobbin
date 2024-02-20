@@ -1,5 +1,7 @@
 package com.mozeago.youtubestudio.ui.screen
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,14 +16,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.mozeago.youtubestudio.ui.components.ListenTopTabRow
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun Listen(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     ListenTopTabRow()
-    Spacer(modifier = modifier.height(16.dp))
 //    YouTubeStudioTopSearchBar()
     Column(
-        modifier = modifier.padding(50.dp),
+        modifier = modifier.padding(100.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
