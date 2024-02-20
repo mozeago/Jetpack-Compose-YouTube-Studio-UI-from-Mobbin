@@ -2,7 +2,9 @@ package com.mozeago.youtubestudio.ui.components
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -11,6 +13,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
@@ -36,7 +39,17 @@ fun ListenTopTabRow(modifier: Modifier = Modifier) {
         selectedTabIndex = selectedTabIndex.intValue,
         modifier = modifier
             .padding(bottom = 16.dp),
-        containerColor = Color(0XFFE80000)
+        containerColor = Color(0XFFE80000),
+        indicator = { indicator ->
+            if (selectedTabIndex.intValue < indicator.size) {
+                Box(
+                    modifier = Modifier
+                        .tabIndicatorOffset(indicator[selectedTabIndex.intValue])
+                        .height(5.dp)
+                        .background(Color.Black)
+                )
+            }
+        }
     ) {
         Tab(
             selected = true,
@@ -73,8 +86,8 @@ fun ListenTopTabRow(modifier: Modifier = Modifier) {
                         Font(R.font.basier_square_regular)
                     )
                 )
-                Spacer(modifier = Modifier.height(5.dp))
             }
+            Spacer(modifier = Modifier.height(10.dp))
         }
         Tab(
             selected = true,
@@ -88,24 +101,30 @@ fun ListenTopTabRow(modifier: Modifier = Modifier) {
             }
 
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_radio),
-                contentDescription = "radio"
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            Text(
-                text = stringResource(id = R.string.app_radio).uppercase(),
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = if (selectedTabIndex.intValue == 1)
-                    FontWeight.Bold else
-                    FontWeight.Normal,
-                fontSize = 16.sp,
-                lineHeight = 24.sp,
-                color = if (selectedTabIndex.intValue == 1) Color.White else Color.DarkGray,
-                fontFamily = FontFamily(
-                    Font(R.font.basier_square_regular)
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_radio),
+                    contentDescription = "radio"
                 )
-            )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = stringResource(id = R.string.app_radio).uppercase(),
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = if (selectedTabIndex.intValue == 1)
+                        FontWeight.Bold else
+                        FontWeight.Normal,
+                    fontSize = 16.sp,
+                    lineHeight = 24.sp,
+                    color = if (selectedTabIndex.intValue == 1) Color.White else Color.DarkGray,
+                    fontFamily = FontFamily(
+                        Font(R.font.basier_square_regular)
+                    )
+                )
+            }
+            Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }
