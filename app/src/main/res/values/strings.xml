@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">YouTube Studio</string>
     <string name="app_route_listen">listen</string>
-    <string name="app_route_favorites">favorites</string>
+    <string name="app_route_favorites">favorite</string>
     <string name="app_route_support">support</string>
     <string name="app_route_more">more</string>
     <string name="app_route_one_on_one">Call us</string>
     <string name="app_search">search</string>
+    <string name="app_tv">live tv</string>
+    <string name="app_radio">radio</string>
 </resources>
