@@ -1,9 +1,11 @@
 package com.mozeago.youtubestudio
 
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -20,6 +22,7 @@ import com.mozeago.youtubestudio.ui.screen.Support
 import com.mozeago.youtubestudio.ui.theme.YouTubeStudioTheme
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -60,6 +63,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(
     uiMode = Configuration.UI_MODE_NIGHT_YES, name = "DefaultPreviewDark", showBackground = true
 )
@@ -81,7 +85,9 @@ fun YouTubeStudioPreview() {
                 modifier = Modifier.padding(paddingValues)
             ) {
                 composable(route = Listen.route) {
-                    Listen.screen
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        Listen.screen
+                    }
                 }
                 composable(route = Favorite.route) {
                     Favorite.screen
